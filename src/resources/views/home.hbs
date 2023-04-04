@@ -1,0 +1,69 @@
+<div class="mb-4 mt-4">
+    <div class="text-center mb-4 mt-4">
+        <h2>Product Manager</h2>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quanlity</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each product}}
+            <tr>
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.quanlity}}</td>
+                <td><a href="/products/{{this._id}}/edit" class="btn btn-link">Edit</a></td>
+                <td><a href="" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="{{this._id}}">Delete</a></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <div class="modal" tabindex="-1" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc muốn xóa thành phần này không?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-delete-product">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<form name="delete-product-form" method="post"></form>
+<script>
+    const myModal = document.getElementById('exampleModal')
+    const deleteForm=document.forms['delete-product-form']
+
+    myModal.addEventListener('shown.bs.modal', () => {
+        // gán cho button giá trị sự kiện trước khi mở modal (sự kiện kich vào nút xóa)
+        const button = event.relatedTarget
+        // lấy giá trị của data-id
+        const productId = button.getAttribute('data-id')
+        var btnDelete=document.getElementById('btn-delete-product')
+        btnDelete.onclick=function(){
+        // set action cho form xoa
+        //alert(productId)
+        deleteForm.action='/products/'+productId+'?_method=DELETE'
+        deleteForm.submit()
+        }
+
+    })
+</script>
